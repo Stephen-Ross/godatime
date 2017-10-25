@@ -2,7 +2,7 @@ package godatime
 
 import (
 	"fmt"
-	"./extensions"
+	"godatime/extensions"
 )
 
 type Period struct {
