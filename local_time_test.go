@@ -64,7 +64,7 @@ func TestLocalTimeMillisecondReturnsTheMillisecondsOfTheTime(t *testing.T) {
 }
 
 func TestLocalTimeTickOfDayReturnsTheTicksOfTheTime(t *testing.T) {
-	localTime := NewLocalTimeTicksSinceMidnight(ticksPerMinute * 5)
+	localTime, _ := NewLocalTimeTicksSinceMidnight(ticksPerMinute * 5)
 
 	actual := localTime.TickOfDay()
 
@@ -72,7 +72,7 @@ func TestLocalTimeTickOfDayReturnsTheTicksOfTheTime(t *testing.T) {
 }
 
 func TestLocalTimeTickOfSecondReturnsTheTicksOfTheCurrentSecond(t *testing.T) {
-	localTime := NewLocalTimeTicksSinceMidnight(ticksPerSecond / 2)
+	localTime, _ := NewLocalTimeTicksSinceMidnight(ticksPerSecond / 2)
 
 	actual := localTime.TickOfSecond()
 
@@ -80,7 +80,7 @@ func TestLocalTimeTickOfSecondReturnsTheTicksOfTheCurrentSecond(t *testing.T) {
 }
 
 func TestLocalTimeNanosecondOfDayReturnsTheNanosecondsOfTheTime(t *testing.T) {
-	localTime := NewLocalTimeNanoseconds(nanosecondsPerMinute * 5)
+	localTime, _ := NewLocalTimeNanoseconds(nanosecondsPerMinute * 5)
 
 	actual := localTime.NanosecondOfDay()
 
@@ -88,7 +88,7 @@ func TestLocalTimeNanosecondOfDayReturnsTheNanosecondsOfTheTime(t *testing.T) {
 }
 
 func TestLocalTimeNanosecondOfSecondReturnsTheNanosecondsOfTheCurrentSecond(t *testing.T) {
-	localTime := NewLocalTimeNanoseconds(nanosecondsPerSecond / 2)
+	localTime, _ := NewLocalTimeNanoseconds(nanosecondsPerSecond / 2)
 
 	actual := localTime.NanosecondOfSecond()
 
@@ -136,7 +136,7 @@ func TestLocalTimePlusMillisecondsAddsTheMilliseconds(t *testing.T) {
 }
 
 func TestLocalTimePlusTicksAddsTheTicks(t *testing.T) {
-	localTime := NewLocalTimeTicksSinceMidnight(40)
+	localTime, _ := NewLocalTimeTicksSinceMidnight(40)
 
 	newTime := localTime.PlusTicks(100)
 
@@ -146,7 +146,7 @@ func TestLocalTimePlusTicksAddsTheTicks(t *testing.T) {
 }
 
 func TestLocalTimePlusNanosecondsAddsTheNanoseconds(t *testing.T) {
-	localTime := NewLocalTimeNanoseconds(100)
+	localTime, _ := NewLocalTimeNanoseconds(100)
 
 	newTime := localTime.PlusNanoseconds(100)
 
@@ -266,8 +266,8 @@ func TestLocalTimeSubtractCorrectlyCalculatesTheMillisecondsBetweenTheTimes(t *t
 }
 
 func TestLocalTimeSubtractCorrectlyCalculatesTheTicksBetweenTheTimes(t *testing.T) {
-	localTime := NewLocalTimeTicksSinceMidnight(300)
-	otherTime := NewLocalTimeTicksSinceMidnight(700)
+	localTime, _ := NewLocalTimeTicksSinceMidnight(300)
+	otherTime, _ := NewLocalTimeTicksSinceMidnight(700)
 
 	delta := localTime.Subtract(otherTime)
 

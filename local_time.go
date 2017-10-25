@@ -1,20 +1,46 @@
 package godatime
 
+import "godatime/preconditions"
+
 type LocalTime struct {
 	nanoseconds int64
 }
 
-func NewLocalTime(builder *LocalTimeBuilder) *LocalTime {
+func NewLocalTime(builder *LocalTimeBuilder) (*LocalTime, error) {
+	if err := preconditions.CheckArgumentRangeInt64("Hour", builder.Hour, 0, hoursPerDay - 1); err != nil {
+		return nil, err
+	}
+
+	if err := preconditions.CheckArgumentRangeInt64("Minute", builder.Minute, 0, minutesPerHour - 1); err != nil {
+		return nil, err
+	}
+
+	if err := preconditions.CheckArgumentRangeInt64("Second", builder.Second, 0, secondsPerMinute - 1); err != nil {
+		return nil, err
+	}
+
+	if err := preconditions.CheckArgumentRangeInt64("millisecond", builder.Millisecond, 0, millisecondsPerSecond - 1); err != nil {
+		return nil, err
+	}
+
 	return &LocalTime{nanoseconds:builder.Hour * nanosecondsPerHour + builder.Minute *
-		nanosecondsPerMinute + builder.Second * nanosecondsPerSecond + builder.Millisecond * nanosecondsPerMillisecond}
+		nanosecondsPerMinute + builder.Second * nanosecondsPerSecond + builder.Millisecond * nanosecondsPerMillisecond}, nil
 }
 
-func NewLocalTimeNanoseconds(nanoseconds int64) *LocalTime {
-	return &LocalTime{nanoseconds:nanoseconds}
+func NewLocalTimeNanoseconds(nanoseconds int64) (*LocalTime, error) {
+	if err := preconditions.CheckArgumentRangeInt64("nanoseconds", nanoseconds, 0, nanosecondsPerDay - 1); err != nil {
+		return nil, err
+	}
+
+	return &LocalTime{nanoseconds:nanoseconds}, nil
 }
 
-func NewLocalTimeTicksSinceMidnight(ticks int64) *LocalTime {
-	return &LocalTime{nanoseconds:ticks * nanosecondsPerTick}
+func NewLocalTimeTicksSinceMidnight(ticks int64) (*LocalTime, error) {
+	if err := preconditions.CheckArgumentRangeInt64("ticks", ticks, 0, ticksPerDay - 1); err != nil {
+		return nil, err
+	}
+
+	return &LocalTime{nanoseconds:ticks * nanosecondsPerTick}, nil
 }
 
 func LocalTimeMax(x, y *LocalTime) *LocalTime {

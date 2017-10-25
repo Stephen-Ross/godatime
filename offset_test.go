@@ -24,7 +24,7 @@ func TestOffsetMinReturnsTheLowerOffset(t *testing.T) {
 }
 
 func TestOffsetSecondsReturnsTheSecondsOfTheOffset(t *testing.T) {
-	offset := OffsetFromSeconds(10)
+	offset, _ := OffsetFromSeconds(10)
 
 	actual := offset.Seconds()
 
@@ -32,7 +32,7 @@ func TestOffsetSecondsReturnsTheSecondsOfTheOffset(t *testing.T) {
 }
 
 func TestOffsetMillisecondsReturnsTheMillisecondsOfTheOffset(t *testing.T) {
-	offset := OffsetFromMilliseconds(5000)
+	offset, _ := OffsetFromMilliseconds(5000)
 
 	actual := offset.Milliseconds()
 
@@ -40,7 +40,7 @@ func TestOffsetMillisecondsReturnsTheMillisecondsOfTheOffset(t *testing.T) {
 }
 
 func TestOffsetTicksReturnsTheTicksOfTheOffset(t *testing.T) {
-	offset := OffsetFromTicks(50000000)
+	offset, _ := OffsetFromTicks(50000000)
 
 	actual := offset.Ticks()
 
@@ -48,7 +48,7 @@ func TestOffsetTicksReturnsTheTicksOfTheOffset(t *testing.T) {
 }
 
 func TestOffsetNanosecondsReturnsTheNanosecondsOfTheOffset(t *testing.T) {
-	offset := OffsetFromNanoseconds(5000000000)
+	offset, _ := OffsetFromNanoseconds(5000000000)
 
 	actual := offset.Nanoseconds()
 
@@ -67,7 +67,7 @@ func TestOffsetAddCorrectlyAddsTheTwoOffsetsIntoANewOffset(t *testing.T) {
 	offset := Offset{seconds:2}
 	otherOffset := Offset{seconds:3}
 
-	actual := offset.Add(&otherOffset)
+	actual, _ := offset.Add(&otherOffset)
 
 	assert.Equal(t, 5, actual.Seconds())
 }
@@ -76,7 +76,7 @@ func TestOffsetSubtractCorrectlySubtractsTheTwoOffsetsIntoANewOffset(t *testing.
 	offset := Offset{seconds:5}
 	otherOffset := Offset{seconds:3}
 
-	actual := offset.Subtract(&otherOffset)
+	actual, _ := offset.Subtract(&otherOffset)
 
 	assert.Equal(t, 2, actual.Seconds())
 }

@@ -1,31 +1,66 @@
 package godatime
 
+import "godatime/preconditions"
+
 type Offset struct {
 	seconds int
 }
 
-func OffsetFromSeconds(seconds int) *Offset {
-	return &Offset{seconds:seconds}
+const (
+	minHours = -18
+	maxHours = 18
+	minSeconds = minHours * secondsPerHour
+	maxSeconds = maxHours * secondsPerHour
+	minMilliseconds = minHours * millisecondsPerHour
+	maxMilliseconds = maxHours * millisecondsPerHour
+	minTicks = minHours * ticksPerHour
+	maxTicks = maxHours * ticksPerHour
+	minNanoseconds = minHours * nanosecondsPerHour
+	maxNanoseconds = maxHours * nanosecondsPerHour
+)
+
+func OffsetFromSeconds(seconds int) (*Offset, error) {
+	if err := preconditions.CheckArgumentRange("seconds", seconds, minSeconds, maxSeconds); err != nil {
+		return nil, err
+	}
+
+	return &Offset{seconds:seconds}, nil
 }
 
-func OffsetFromMilliseconds(milliseconds int) *Offset {
-	return &Offset{seconds:(int)(milliseconds / millisecondsPerSecond)}
+func OffsetFromMilliseconds(milliseconds int) (*Offset, error) {
+	if err := preconditions.CheckArgumentRange("milliseconds", milliseconds, minMilliseconds, maxMilliseconds); err != nil {
+		return nil, err
+	}
+
+	return &Offset{seconds:(int)(milliseconds / millisecondsPerSecond)}, nil
 }
 
-func OffsetFromTicks(ticks int64) *Offset {
-	return &Offset{seconds:(int)(ticks / ticksPerSecond)}
+func OffsetFromTicks(ticks int64) (*Offset, error) {
+	if err := preconditions.CheckArgumentRangeInt64("ticks", ticks, minTicks, maxTicks); err != nil {
+		return nil, err
+	}
+
+	return &Offset{seconds:(int)(ticks / ticksPerSecond)}, nil
 }
 
-func OffsetFromNanoseconds(nanoseconds int64) *Offset {
-	return &Offset{seconds:(int)(nanoseconds / nanosecondsPerSecond)}
+func OffsetFromNanoseconds(nanoseconds int64) (*Offset, error) {
+	if err := preconditions.CheckArgumentRangeInt64("nanoseconds", nanoseconds, minNanoseconds, maxNanoseconds); err != nil {
+		return nil, err
+	}
+
+	return &Offset{seconds:(int)(nanoseconds / nanosecondsPerSecond)}, nil
 }
 
-func OffsetFromHours(hours int) *Offset {
-	return &Offset{seconds:hours * secondsPerHour}
+func OffsetFromHours(hours int) (*Offset, error) {
+	if err := preconditions.CheckArgumentRange("hours", hours, minHours, maxHours); err != nil {
+		return nil, err
+	}
+
+	return &Offset{seconds:hours * secondsPerHour}, nil
 }
 
-func OffsetFromHoursAndMinutes(hours, minutes int) *Offset {
-	return &Offset{seconds:hours *secondsPerHour + minutes *secondsPerMinute}
+func OffsetFromHoursAndMinutes(hours, minutes int) (*Offset, error) {
+	return OffsetFromSeconds(hours *secondsPerHour + minutes *secondsPerMinute)
 }
 
 func OffsetMax(x, y *Offset) *Offset {
@@ -64,11 +99,11 @@ func (o *Offset) Negate() *Offset {
 	return &Offset{seconds:-o.seconds}
 }
 
-func (o *Offset) Add(other *Offset) *Offset {
+func (o *Offset) Add(other *Offset) (*Offset, error) {
 	return OffsetFromSeconds(o.seconds + other.seconds)
 }
 
-func (o *Offset) Subtract(other *Offset) *Offset {
+func (o *Offset) Subtract(other *Offset) (*Offset, error) {
 	return OffsetFromSeconds(o.seconds - other.seconds)
 }
 
